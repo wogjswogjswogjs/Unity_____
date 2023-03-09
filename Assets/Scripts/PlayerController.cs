@@ -33,8 +33,8 @@ public class PlayerController : MonoBehaviour
     private Transform foot;
     public LayerMask ground;
     private bool onGrounded;
-    
-    
+
+    private bool direction;
 
     
     
@@ -98,30 +98,28 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GameObject bullet = BulletManager.Instance.LoadBullet(); 
-            bullet.transform.position = hand.position;
-
-            if (direction == true )
-            {
-                bullet.transform.eulerAngles = new Vector3(0, 0, 90);
-            }
-            else
-            {
-                bullet.transform.eulerAngles = new Vector3(0, 0, -90);
-            }
-            Instantiate(bullet);
-        }
+        
 
         playerAnim.SetFloat("speed", moveDir.magnitude);
         moveDir = new Vector3(horizontal, vertical, 0).normalized;
-        transform.position += moveDir * speed * Time.deltaTime;
+        //transform.position += moveDir * speed * Time.deltaTime;
     }
 
     IEnumerator Attack()
     {
         playerAnim.SetTrigger("Attack");
+        GameObject bullet = BulletManager.Instance.LoadBullet(); 
+        bullet.transform.position = hand.position;
+
+        if (direction == true )
+        {
+            bullet.transform.eulerAngles = new Vector3(0, 0, 90);
+        }
+        else
+        {
+            bullet.transform.eulerAngles = new Vector3(0, 0, -90);
+        }
+        Instantiate(bullet);
         yield return new WaitForSeconds(attackDelayTime);
         attackDelay = false;
     }
